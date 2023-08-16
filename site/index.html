@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+       
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2,
+        h3 {
+            margin: 0;
+            padding: 20px;
+            background-color: #4da6ff;
+            color: white;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <h2>Carrinho de Compras</h2>
+ 
+    <ul class="product-list">
+        <li>
+            
+            <img class="product-image"
+                src="https://www.freepik.com/free-photo/beautiful-woman-with-makeup-products_1154628.htm#page=1&query=makeup&position=1"
+                alt="Base Makeup">
+            <span class="product-name">Base premium pink</span>
+            <span class="product-price">R$10.99</span>
+            <input class="quantity-input" type="number" value="1">
+        </li>
+        <li>
+
+           
+            <img class="product-image"
+                src="https://www.freepik.com/free-photo/makeup-products-with-white-flowers-pink-background_1211559.htm#page=1&query=makeup&position=3"
+                alt="kit make">
+            <span class="product-name">kit make</span>
+            <span class="product-price">R$20.99</span>
+            <input class="quantity-input" type="number" value="1">
+        </li>
+    </ul>
+
+  
+    <button class="button" onclick="addToCart()">Adicionar ao Carrinho</button>
+
+    
+    <h3>Resumo do Pedido</h3>
+    <table id="order-summary">
+        <tr>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Preço Unitário</th>
+            <th>Subtotal</th>
+        </tr>
+    </table>
+
+   
+    <h3>Opções de Pagamento</h3>
+    <p id="total-value">Valor total: R$0.00</p>
+    <p>Parcelamento:</p>
+    <ul id="installment-options">
+    </ul>
+
+    <script>
+        function addToCart() {
+         
+            let productList = document.querySelectorAll('.product-list li');
+
+         
+            let orderSummary = document.querySelector('#order-summary');
+
+           
+            orderSummary.innerHTML = `
+                <tr>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Preço Unitário</th>
+                    <th>Subtotal</th>
+                </tr>`;
+
+          
+            let totalValue = 0;
+
+         
+            for (let i = 0; i < productList.length; i++) {
+                // Get the product details
+                let productName = productList[i].querySelector('.product-name').textContent;
+                let productPrice = parseFloat(productList[i].querySelector('.product-price').textContent.replace('R$', ''));
+                let productQuantity = parseInt(productList[i].querySelector('.quantity-input').value);
+                let productSubtotal = productPrice * productQuantity;
+
+                
+                let row = orderSummary.insertRow(-1);
+                row.insertCell(0).innerHTML = productName;
+                row.insertCell(1).innerHTML = productQuantity;
+                row.insertCell(2).innerHTML = `R$${productPrice.toFixed(2)}`;
+                row.insertCell(3).innerHTML = `R$${productSubtotal.toFixed(2)}`;
+
+                
+                totalValue += productSubtotal;
+            }
+
+            
+            let row = orderSummary.insertRow(-1);
+            row.insertCell(0).innerHTML = 'Total:';
+            row.insertCell(1).innerHTML = '';
+            row.insertCell(2).innerHTML = '';
+            row.insertCell(3).innerHTML = `R$${totalValue.toFixed(2)}`;
+
+           
+            document.querySelector('#total-value').innerHTML = `Valor total: R$${totalValue.toFixed(2)}`;
+
+          
+            let installmentOptions = document.querySelector('#installment-options');
+            installmentOptions.innerHTML = `
+                <li>1x de R$${totalValue.toFixed(2)} sem juros</li>
+                <li>2x de R$${(totalValue / 2).toFixed(2)} sem juros</li>
+                <li>3x de R$${(totalValue / 3).toFixed(2)} sem juros</li>`;
+        }
+    </script>
+
+</body>
+
+</html>
